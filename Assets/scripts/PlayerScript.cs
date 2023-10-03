@@ -11,6 +11,7 @@ public class PlayerScript : MonoBehaviour
 
         public float distanceToCheck = 0.5f;
         public bool isGrounded;
+        public bool canMove = true;
     
 
 
@@ -20,6 +21,8 @@ public class PlayerScript : MonoBehaviour
     public Sprite spriteUp;
     public Sprite spriteLeft;
     public Sprite spriteRight;
+
+    
 
     private SpriteRenderer spriteRenderer;
 
@@ -50,82 +53,93 @@ public class PlayerScript : MonoBehaviour
         Color rayColour;
 
 
-        if (isGrounded == false)
-        {
-            anim.SetBool("idle", false);
-        }
-        else
-        {
-            anim.SetBool("idle", true);
-        }
 
-        //-----Controls--------
+        
 
-        //---JUMP---         (was UP)
-        if (Input.GetKeyDown("space") && (isGrounded) == true)
+        if (canMove == true)
         {
 
-            rb.AddForce(new Vector2(0, 7), ForceMode2D.Impulse);
 
-            anim.SetBool("jump", true);
-            anim.SetBool("run", false);
-        }
-        else if (isGrounded == true)
-        {
-
-            anim.SetBool("jump", false);
-
-        }
-
-
-        if (Input.GetKey("a") || Input.GetKey("d") == true)
-        {
-
-            //---LEFT---
-            if (Input.GetKey("a") == true)
+            if (isGrounded == false)
             {
-                transform.position = new Vector2(transform.position.x - (speed * Time.deltaTime), transform.position.y);
-                spriteRenderer.flipX = true;
-            }
-
-
-
-
-            //---RIGHT--
-            if (Input.GetKey("d") == true)
-            {
-                transform.position = new Vector2(transform.position.x + (speed * Time.deltaTime), transform.position.y);
-                spriteRenderer.flipX = false;
-            }
-
-
-            if (isGrounded == true)
-            {
-                anim.SetBool("run", true);
+                anim.SetBool("idle", false);
             }
             else
             {
+                anim.SetBool("idle", true);
+            }
+
+            //-----Controls--------
+
+            //---JUMP---         (was UP)
+            if (Input.GetKeyDown("space") && (isGrounded) == true)
+            {
+
+                rb.AddForce(new Vector2(0, 7), ForceMode2D.Impulse);
+
+                anim.SetBool("jump", true);
                 anim.SetBool("run", false);
             }
-            
+            else if (isGrounded == true)
+            {
+
+                anim.SetBool("jump", false);
+
+            }
+
+
+            if (Input.GetKey("a") || Input.GetKey("d") == true)
+            {
+
+                //---LEFT---
+                if (Input.GetKey("a") == true)
+                {
+                    transform.position = new Vector2(transform.position.x - (speed * Time.deltaTime), transform.position.y);
+                    spriteRenderer.flipX = true;
+                }
+
+
+
+
+                //---RIGHT--
+                if (Input.GetKey("d") == true)
+                {
+                    transform.position = new Vector2(transform.position.x + (speed * Time.deltaTime), transform.position.y);
+                    spriteRenderer.flipX = false;
+                }
+
+
+                if (isGrounded == true)
+                {
+                    anim.SetBool("run", true);
+                }
+                else
+                {
+                    anim.SetBool("run", false);
+                }
+
+
+            }
+            else
+            {
+
+                anim.SetBool("run", false);
+
+            }
+
+            //----ATTACK---
+            if (Input.GetKey("q") == true)
+            {
+                anim.SetBool("attack", true);
+            }
+            else
+            {
+                anim.SetBool("attack", false);
+            }
 
         }
-        else
-        {
 
-            anim.SetBool("run", false);
 
-        }
-
-        //----ATTACK---
-        if (Input.GetKey("q") == true)
-        {
-            anim.SetBool("attack", true);
-        }
-        else
-        {
-            anim.SetBool("attack", false);
-        }
 
 
         //-----------------------
@@ -147,6 +161,14 @@ public class PlayerScript : MonoBehaviour
 
 
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        anim.SetBool("idle", false);
+        canMove = false;
+        spriteRenderer.sprite = spriteDown;
+    }
+
 }
 
 //---Holding-things----
