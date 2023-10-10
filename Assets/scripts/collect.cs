@@ -23,10 +23,14 @@ public class collect : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        hit = true;
-        wait = 0.2f;
+        if (other.gameObject.CompareTag("Player"))
+        {
+            hit = true;
+            wait = 0.2f;
+        }
+     
     }
 
     void CheckForHit()

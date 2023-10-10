@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEditor;
 using UnityEditor.Tilemaps;
 using UnityEngine;
@@ -9,13 +10,14 @@ using UnityEngine;
 public class PlayerScript : MonoBehaviour
 {
 
-        public float distanceToCheck = 0.5f;
-        public bool isGrounded;
+        
+       
         public bool canMove = true;
-    
 
+    public GameObject player;
 
-        public float speed = 2f;
+    public float speed;
+    public float jump;
 
     public Sprite spriteDown;
     public Sprite spriteUp;
@@ -31,6 +33,7 @@ public class PlayerScript : MonoBehaviour
     Animator anim;
 
 
+    Helping Helping;
 
 
     // Start is called before the first frame update
@@ -42,6 +45,7 @@ public class PlayerScript : MonoBehaviour
 
         anim = GetComponent<Animator>();
 
+        Helping = gameObject.AddComponent<Helping>();
 
 
     }
@@ -50,8 +54,7 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Color rayColour;
-
+       
 
 
         
@@ -60,31 +63,25 @@ public class PlayerScript : MonoBehaviour
         {
 
 
-            if (isGrounded == false)
-            {
-                anim.SetBool("idle", false);
-            }
-            else
-            {
-                anim.SetBool("idle", true);
-            }
 
             //-----Controls--------
 
             //---JUMP---         (was UP)
-            if (Input.GetKeyDown("space") && (isGrounded) == true)
+            if (Input.GetKeyDown("space") && (Helping.GroundCheck()) == true)
             {
-
-                rb.AddForce(new Vector2(0, 7), ForceMode2D.Impulse);
-
                 anim.SetBool("jump", true);
-                anim.SetBool("run", false);
+                rb.AddForce(new Vector2(0, jump), ForceMode2D.Impulse);
+
+                
             }
-            else if (isGrounded == true)
+
+            if (Helping.GroundCheck() == false)
             {
-
+                anim.SetBool("jump", true);
+            }
+            else
+            {
                 anim.SetBool("jump", false);
-
             }
 
 
@@ -109,17 +106,13 @@ public class PlayerScript : MonoBehaviour
                 }
 
 
-                if (isGrounded == true)
+                if (Helping.GroundCheck() == true)
                 {
                     anim.SetBool("run", true);
                 }
-                else
-                {
-                    anim.SetBool("run", false);
-                }
-
 
             }
+         
             else
             {
 
@@ -136,6 +129,7 @@ public class PlayerScript : MonoBehaviour
             {
                 anim.SetBool("attack", false);
             }
+            
 
         }
 
@@ -144,31 +138,20 @@ public class PlayerScript : MonoBehaviour
 
         //-----------------------
 
-        Vector3 offset = new Vector3(0, -0.0f, 0);
-        if (Physics2D.Raycast(transform.position + offset, Vector2.down, distanceToCheck))
-        {
-            isGrounded = true;
-            rayColour = Color.red;
-        }
-        else
-        {
-            isGrounded = false;
-            rayColour = Color.white;
-        }
-
-        Debug.DrawRay(transform.position + offset, Vector2.down * distanceToCheck, rayColour);
-
-
 
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        anim.SetBool("idle", false);
-        canMove = false;
-        spriteRenderer.sprite = spriteDown;
+        if (other.gameObject.CompareTag("enemy"))
+        {
+            anim.SetBool("dead", true);
+           // canMove = false;
+            spriteRenderer.sprite = spriteDown;
+        }
+       
     }
-
+    
 }
 
 //---Holding-things----
