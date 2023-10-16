@@ -27,7 +27,7 @@ public class Helping : MonoBehaviour
 
 
     }
-    public bool GroundCheck()
+    public bool GroundCheck(float xOff, float yOff)
     {
 
         Color rayColour;
@@ -36,7 +36,7 @@ public class Helping : MonoBehaviour
         bool isGrounded;
 
 
-        Vector3 offset = new Vector3(0, -0.0f, 0);
+        Vector3 offset = new Vector3(xOff, yOff, 0);
         if (Physics2D.Raycast(transform.position + offset, Vector2.down, distanceToCheck))
         {
             isGrounded = true;
