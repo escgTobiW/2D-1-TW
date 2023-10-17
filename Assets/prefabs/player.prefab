@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2128655326, guid: 87e04a5fd3691c24ab66c042808dc631, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.759434, g: 0.94401497, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -100,10 +100,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f8d8e9c7ef286418b743d37c2b8906, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanceToCheck: 0.5
-  isGrounded: 0
   canMove: 1
+  player: {fileID: 0}
   speed: 4
+  jump: 0
   spriteDown: {fileID: -5789737788129074030, guid: d12f87d0e77a4904baea78a495b6358c, type: 3}
   spriteUp: {fileID: 0}
   spriteLeft: {fileID: 0}
