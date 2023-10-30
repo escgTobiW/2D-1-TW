@@ -9,8 +9,13 @@ public class spell : MonoBehaviour
     
     public GameObject player;
     Vector2 playerPos;
-    bool On = true;
+   
 
+    bool On = true;
+   
+
+
+   
 
     void Start()
     {
@@ -20,6 +25,7 @@ public class spell : MonoBehaviour
   
     void Update()
     {
+
 
 
         if (Input.GetMouseButtonDown(1) == true)
@@ -32,7 +38,8 @@ public class spell : MonoBehaviour
             playerPos = new Vector2(player.transform.position.x, player.transform.position.y);
             transform.position = Vector2.MoveTowards(transform.position, playerPos, 4 * Time.deltaTime);
         }
-       
+
+
 
 
     }
